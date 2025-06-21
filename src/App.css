@@ -1,38 +1,454 @@
-.App {
+/* Global Styles */
+* {
+  box-sizing: border-box;
+}
+
+/* Custom Ant Design Overrides */
+.ant-layout-sider {
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
+}
+
+.ant-layout-sider-children {
+  overflow: hidden;
+}
+
+/* Sider Trigger Animations */
+.ant-layout-sider-trigger {
+  transition: all 0.3s ease !important;
+  border-top: 1px solid rgba(0,0,0,0.06) !important;
+}
+
+.ant-layout-sider-trigger:hover {
+  background: rgba(139, 92, 246, 0.15) !important;
+  color: #7c3aed !important;
+  transform: scale(1.05);
+}
+
+/* Sidebar Animation Effects */
+.ant-layout-sider-collapsed .ant-layout-sider-trigger {
+  width: 80px;
+}
+
+/* Menu Animation Improvements */
+.ant-menu {
+  transition: all 0.3s ease !important;
+}
+
+.ant-menu-item {
+  transform-origin: left center;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
+}
+
+.ant-layout-sider-collapsed .ant-menu-item {
+  opacity: 1;
+  animation: fadeInScale 0.3s ease;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Logo Animation */
+.logo-container {
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.logo-container > div:first-child {
+  transition: all 0.3s ease;
+}
+
+.ant-layout-sider-collapsed .logo-container > div:first-child {
+  animation: logoSpin 0.5s ease;
+}
+
+@keyframes logoSpin {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(180deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+.ant-menu-item-selected {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%) !important;
+  color: white !important;
+}
+
+.ant-menu-item-selected .anticon {
+  color: white !important;
+}
+
+.ant-menu-item {
+  transition: all 0.3s ease;
+  margin: 4px 8px !important;
+  border-radius: 8px !important;
+  height: auto !important;
+  line-height: 1.5 !important;
+  padding: 8px 16px !important;
+}
+
+.ant-menu-item:hover {
+  transform: translateX(2px);
+}
+
+.ant-menu-item .ant-menu-title-content {
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Collapsed menu adjustments */
+.ant-layout-sider-collapsed .ant-menu-item {
+  padding: 8px 0 !important;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.ant-layout-sider-collapsed .ant-menu-item .anticon {
+  font-size: 20px;
+  margin-right: 0 !important;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.ant-menu-inline-collapsed > .ant-menu-item {
+  padding: 0 calc(50% - 12px) !important;
+}
+
+.ant-menu-inline-collapsed .ant-menu-item-icon {
+  font-size: 18px;
+  line-height: 40px;
+}
+
+/* Card Hover Effects */
+.hover-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.hover-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Gradient Button */
+.gradient-button {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  border: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.gradient-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4) !important;
+}
+
+/* Stat Card Animation */
+.stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.3;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* Glass Effect Cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
 }
 
-.App-link {
-  color: #61dafb;
+/* Table Styling */
+.ant-table-thead > tr > th {
+  background: #f9fafb !important;
+  font-weight: 600 !important;
+  color: #374151 !important;
+  border-bottom: 2px solid #e5e7eb !important;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.ant-table-tbody > tr:hover > td {
+  background: #f3f4f6 !important;
+}
+
+.ant-table-tbody > tr {
+  transition: all 0.3s ease;
+}
+
+/* Progress Bar */
+.custom-progress .ant-progress-inner {
+  background: #f3f4f6 !important;
+}
+
+.custom-progress .ant-progress-bg {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%) !important;
+}
+
+/* Badge Animation */
+.notification-badge .ant-badge-count {
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Loading States */
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes bellVibrate {
+  0% { transform: translateX(0) rotate(0deg); }
+  10% { transform: translateX(-2px) rotate(-5deg); }
+  20% { transform: translateX(2px) rotate(5deg); }
+  30% { transform: translateX(-2px) rotate(-5deg); }
+  40% { transform: translateX(2px) rotate(5deg); }
+  50% { transform: translateX(-1px) rotate(-2deg); }
+  60% { transform: translateX(1px) rotate(2deg); }
+  70% { transform: translateX(-1px) rotate(-2deg); }
+  80% { transform: translateX(1px) rotate(2deg); }
+  90% { transform: translateX(0) rotate(0deg); }
+  100% { transform: translateX(0) rotate(0deg); }
+}
+
+.notification-bell-vibrate {
+  animation: bellVibrate 0.8s ease-in-out;
+  animation-iteration-count: 1;
+  animation-delay: 0s;
+}
+
+.notification-bell-container {
+  animation: bellVibrate 0.8s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8b5cf6;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7c3aed;
+}
+
+/* Input Focus Effects */
+.ant-input:focus,
+.ant-input-focused {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
+}
+
+/* Select Dropdown */
+.ant-select-focused .ant-select-selector {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
+}
+
+/* Date Picker */
+.ant-picker-focused {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
+}
+
+/* Tooltip Enhancement */
+.ant-tooltip-inner {
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
+}
+
+/* Page Transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+  
+  /* Force collapsed sidebar on mobile */
+  .ant-layout-sider {
+    width: 80px !important;
+    max-width: 80px !important;
+    min-width: 80px !important;
+    flex: 0 0 80px !important;
+  }
+  
+  /* Adjust header on mobile */
+  .ant-layout-header {
+    padding: 0 16px !important;
+  }
+  
+  /* Smaller search bar on mobile */
+  .mobile-search {
+    width: 200px !important;
+  }
+  
+  /* Adjust content padding on mobile */
+  .ant-layout-content {
+    margin: 16px !important;
+    padding: 16px !important;
+  }
+  
+  /* Mobile-friendly cards */
+  .mobile-card {
+    margin-bottom: 16px;
+  }
+  
+  /* Touch-friendly buttons */
+  .mobile-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Adjust footer on mobile */
+  .ant-layout-footer {
+    padding: 16px !important;
+    text-align: center;
+  }
+  
+  /* Hide some footer elements on mobile */
+  .footer-desktop-only {
+    display: none !important;
+  }
+  
+  /* Ensure notification dropdown is mobile-friendly */
+  .notification-dropdown {
+    width: calc(100vw - 32px) !important;
+    max-width: 400px !important;
+  }
+  
+  /* Make PWA install prompt mobile-friendly */
+  .pwa-install-mobile {
+    width: calc(100vw - 32px) !important;
+    max-width: 400px !important;
+    margin: 16px !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .show-mobile-only {
+    display: none !important;
+  }
+}
+
+/* Tablet responsive design */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .ant-layout-sider {
+    width: 200px !important;
+    max-width: 200px !important;
+    min-width: 200px !important;
+    flex: 0 0 200px !important;
+  }
+  
+  .tablet-search {
+    width: 250px !important;
+  }
+  
+  .ant-layout-content {
+    margin: 20px !important;
+    padding: 24px !important;
+  }
+}
+
+/* Theme toggle button animations */
+.theme-toggle-btn:hover {
+  background-color: var(--bg-accent) !important;
+  transform: scale(1.1);
+  border-radius: 50% !important;
+}
+
+/* PWA install prompt responsive */
+@media (max-width: 640px) {
+  .pwa-mobile {
+    padding: 16px !important;
+  }
+  
+  .pwa-mobile .ant-modal-content {
+    margin: 16px !important;
+  }
+  
+  .pwa-mobile .ant-typography-title {
+    font-size: 20px !important;
   }
 }

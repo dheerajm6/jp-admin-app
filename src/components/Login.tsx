@@ -2,206 +2,239 @@ import React, { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { supabase } from '../lib/supabase'
 import TestConnection from './TestConnection'
-import { motion } from 'framer-motion'
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
+import { Card, Form, Input, Button, Alert, Space, Typography, Divider, message } from 'antd'
+import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
+
+const { Title, Text } = Typography
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [form] = Form.useForm()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [showSignUp, setShowSignUp] = useState(false)
+  const [showOtpInput, setShowOtpInput] = useState(false)
+  const [email, setEmail] = useState('')
   const [showTest, setShowTest] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const { signIn } = useAuth()
+  const { requestOtp, verifyOtp } = useAuth()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleRequestOtp = async (values: { email: string }) => {
     setError('')
     setLoading(true)
+    setEmail(values.email)
 
-    const { error } = await signIn(email, password)
-    
-    if (error) {
-      if (error.message.includes('Email not confirmed')) {
-        setError(`Email not confirmed. Please:\n1. Check your email for verification link, OR\n2. Disable email confirmation in Supabase Dashboard > Authentication > Settings, OR\n3. Use the "Test Connection" tool below to fix this.`)
+    try {
+      // Special handling for admin@janpulse.com
+      if (values.email === 'admin@janpulse.com') {
+        setShowOtpInput(true)
+        message.success('Default OTP: 123456')
       } else {
-        setError(`Login failed: ${error.message}`)
+        const { error } = await requestOtp(values.email)
+        if (error) {
+          setError(error.message)
+        } else {
+          setShowOtpInput(true)
+          message.success('OTP sent to your email')
+        }
       }
-      console.error('Login error:', error)
+    } catch (err) {
+      setError('Failed to send OTP')
     }
     
     setLoading(false)
   }
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleVerifyOtp = async (values: { otp: string }) => {
     setError('')
     setLoading(true)
 
     try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-      })
-
-      if (error) {
-        setError(`Sign up failed: ${error.message}`)
+      // Special handling for admin@janpulse.com
+      if (email === 'admin@janpulse.com' && values.otp === '123456') {
+        // Create a mock session for admin bypass
+        const { error } = await verifyOtp(email, values.otp)
+        if (error) {
+          setError(error.message)
+        }
       } else {
-        setError('')
-        alert('Account created! Please check your email for verification link.')
-        setShowSignUp(false)
+        const { error } = await verifyOtp(email, values.otp)
+        if (error) {
+          setError(error.message)
+        }
       }
     } catch (err) {
-      setError(`Sign up error: ${err}`)
+      setError('Failed to verify OTP')
     }
     
     setLoading(false)
   }
 
+  const handleBack = () => {
+    setShowOtpInput(false)
+    setError('')
+    form.resetFields(['otp'])
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
-      >
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #faf5ff 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+      <Card style={{ width: '100%', maxWidth: '400px', boxShadow: '0 10px 40px rgba(0,0,0,0.1)' }}>
+        <Space direction="vertical" size="large" style={{ width: '100%' }}>
           {/* Header */}
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-center mb-8"
-          >
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">JanPulse Admin</h1>
-            <p className="text-gray-600">Team Access Only</p>
-          </motion.div>
+          <div style={{ textAlign: 'center' }}>
+            <Title level={2} style={{ marginBottom: '8px' }}>JanPulse Admin</Title>
+            <Text type="secondary">Team Access Only</Text>
+          </div>
 
           {/* Test Connection */}
           {showTest && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mb-6"
-            >
+            <div>
               <TestConnection />
-            </motion.div>
+            </div>
+          )}
+          
+          {/* Error Message */}
+          {error && (
+            <Alert
+              message="Authentication Error"
+              description={error}
+              type="error"
+              showIcon
+              style={{ marginBottom: '16px' }}
+            />
           )}
           
           {/* Form */}
-          <motion.form 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            onSubmit={showSignUp ? handleSignUp : handleSubmit} 
-            className="space-y-6"
-          >
-            {/* Error Message */}
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
-              >
-                {error}
-              </motion.div>
-            )}
-            
-            {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                disabled={loading}
-                placeholder="Enter your email"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors disabled:bg-gray-50 disabled:text-gray-500"
-              />
-            </div>
-            
-            {/* Password Field */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  disabled={loading}
-                  placeholder="Enter your password"
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors disabled:bg-gray-50 disabled:text-gray-500"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? (
-                    <EyeSlashIcon className="h-5 w-5" />
-                  ) : (
-                    <EyeIcon className="h-5 w-5" />
-                  )}
-                </button>
-              </div>
-            </div>
-            
-            {/* Submit Button */}
-            <motion.button 
-              type="submit" 
-              disabled={loading}
-              whileHover={{ scale: loading ? 1 : 1.02 }}
-              whileTap={{ scale: loading ? 1 : 0.98 }}
-              className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold py-3 px-4 rounded-lg hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+          {!showOtpInput ? (
+            <Form
+              form={form}
+              name="login"
+              onFinish={handleRequestOtp}
+              layout="vertical"
+              size="large"
             >
-              {loading ? (
-                <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  {showSignUp ? 'Creating Account...' : 'Signing in...'}
+              <Form.Item
+                name="email"
+                label="Email Address"
+                rules={[
+                  { required: true, message: 'Please input your email!' },
+                  { type: 'email', message: 'Please enter a valid email!' }
+                ]}
+              >
+                <Input
+                  prefix={<MailOutlined />}
+                  placeholder="Enter your email"
+                  disabled={loading}
+                />
+              </Form.Item>
+              
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={loading}
+                  block
+                  size="large"
+                  style={{ background: 'linear-gradient(135deg, #1890ff, #722ed1)' }}
+                >
+                  Send OTP
+                </Button>
+              </Form.Item>
+            </Form>
+          ) : (
+            <Form
+              form={form}
+              name="otp"
+              onFinish={handleVerifyOtp}
+              layout="vertical"
+              size="large"
+            >
+              <Form.Item>
+                <div style={{
+                  background: 'linear-gradient(135deg, #f0f9ff 0%, #ede9fe 100%)',
+                  border: '1px solid rgba(139, 92, 246, 0.2)',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  textAlign: 'center'
+                }}>
+                  <Text style={{ fontSize: '14px' }}>OTP sent to:</Text>
+                  <br />
+                  <Text strong style={{ fontSize: '16px' }}>{email}</Text>
+                  {email === 'admin@janpulse.com' && (
+                    <div style={{ marginTop: '12px' }}>
+                      <Text type="secondary" style={{ fontSize: '13px' }}>Default OTP:</Text>
+                      <div style={{
+                        fontSize: '24px',
+                        fontWeight: 700,
+                        color: '#8b5cf6',
+                        letterSpacing: '4px',
+                        marginTop: '4px'
+                      }}>123456</div>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                showSignUp ? 'Create Account' : 'Sign In'
-              )}
-            </motion.button>
-          </motion.form>
+              </Form.Item>
+              
+              <Form.Item
+                name="otp"
+                label="Enter OTP"
+                rules={[
+                  { required: true, message: 'Please input the OTP!' },
+                  { len: 6, message: 'OTP must be 6 digits!' }
+                ]}
+              >
+                <Input
+                  prefix={<LockOutlined />}
+                  placeholder="Enter 6-digit OTP"
+                  disabled={loading}
+                  maxLength={6}
+                  style={{
+                    fontSize: '18px',
+                    letterSpacing: '8px',
+                    textAlign: 'center',
+                    fontWeight: 600
+                  }}
+                />
+              </Form.Item>
+              
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={loading}
+                  block
+                  size="large"
+                  style={{ background: 'linear-gradient(135deg, #1890ff, #722ed1)' }}
+                >
+                  Verify OTP
+                </Button>
+              </Form.Item>
+              
+              <Form.Item>
+                <Button
+                  type="link"
+                  onClick={handleBack}
+                  disabled={loading}
+                  block
+                >
+                  Back to Email
+                </Button>
+              </Form.Item>
+            </Form>
+          )}
+
+          <Divider />
 
           {/* Action Buttons */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="mt-6 space-y-3"
-          >
-            <button 
-              type="button" 
-              onClick={() => setShowSignUp(!showSignUp)}
-              disabled={loading}
-              className="w-full text-sm text-primary-600 hover:text-primary-700 font-medium disabled:text-gray-400 transition-colors"
-            >
-              {showSignUp ? 'Already have an account? Sign In' : 'Need an account? Sign Up'}
-            </button>
-            
-            <button 
-              type="button" 
+          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+            <Button 
+              type="text" 
               onClick={() => setShowTest(!showTest)}
-              className="w-full text-xs text-gray-500 hover:text-gray-700 py-2 px-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              size="small"
+              block
             >
               {showTest ? 'Hide Connection Test' : 'Test Connection'}
-            </button>
-          </motion.div>
-        </div>
-      </motion.div>
+            </Button>
+          </Space>
+        </Space>
+      </Card>
     </div>
   )
 }

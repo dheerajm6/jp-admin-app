@@ -270,6 +270,15 @@ code {
   }
 }
 
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* Responsive */
 @media (min-width: 768px) {
   .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
