@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
-import { supabase } from '../lib/supabase'
 import TestConnection from './TestConnection'
 import { Card, Form, Input, Button, Alert, Space, Typography, Divider, message } from 'antd'
-import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
+import { LockOutlined, MailOutlined } from '@ant-design/icons'
 
 const { Title, Text } = Typography
 

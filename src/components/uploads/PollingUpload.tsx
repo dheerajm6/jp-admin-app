@@ -5,11 +5,6 @@ import { UploadOutlined, DownloadOutlined } from '@ant-design/icons'
 const { Title, Paragraph } = Typography
 
 const PollingUpload: React.FC = () => {
-  const requiredColumns = {
-    stations: ['Station ID', 'Station Name', 'Address', 'Constituency', 'District', 'State', 'Booth Type', 'Capacity'],
-    voters: ['Voter ID', 'Name', 'Age', 'Gender', 'Address', 'Constituency', 'Polling Station', 'Status'],
-    results: ['Constituency', 'Candidate Name', 'Party', 'Votes', 'Vote Share', 'Position', 'Status']
-  }
 
   const downloadTemplate = (type: 'stations' | 'voters' | 'results') => {
     const templates = {

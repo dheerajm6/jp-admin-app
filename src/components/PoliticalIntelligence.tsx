@@ -76,12 +76,12 @@ const PoliticalIntelligence: React.FC = () => {
   // Load data on component mount
   useEffect(() => {
     loadDashboardData()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load filtered data for pie charts when filters change
   useEffect(() => {
     loadFilteredPieChartData()
-  }, [selectedState, selectedParty, selectedGender])
+  }, [selectedState, selectedParty, selectedGender]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadDashboardData = async () => {
     setLoading(true)
@@ -173,7 +173,7 @@ const PoliticalIntelligence: React.FC = () => {
   }
 
   // Calculate totals for summary metrics (unfiltered data)
-  const totalConstituencies = constituencyStats.reduce((sum, state) => sum + state.total_constituencies, 0)
+  // const totalConstituencies = constituencyStats.reduce((sum, state) => sum + state.total_constituencies, 0)
   const totalCoveredConstituencies = constituencyStats.reduce((sum, state) => sum + state.covered_constituencies, 0)
   const totalRepresentatives = totalCoveredConstituencies // Representatives equal covered constituencies
   const totalActiveWorkers = partyWorkersStats.reduce((sum, party) => sum + party.active_workers, 0)

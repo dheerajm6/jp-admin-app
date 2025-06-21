@@ -25,7 +25,6 @@ import {
   SearchOutlined,
   BarChartOutlined,
   FileTextOutlined,
-  SettingOutlined,
   ApiOutlined
 } from '@ant-design/icons'
 
@@ -335,7 +334,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Space split={<span style={{ color: '#d1d5db' }}>•</span>} size="large">
           <Text style={{ color: '#6b7280', fontSize: '13px' }}>🚀 Empowering Democracy</Text>
           <Text style={{ color: '#6b7280', fontSize: '13px' }}>v1.0.0</Text>
-          <a href="#" style={{ 
+          <a href="/support" style={{ 
             color: '#8b5cf6', 
             fontSize: '13px', 
             textDecoration: 'none',
@@ -347,7 +346,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           >
             💬 Support
           </a>
-          <a href="#" style={{ 
+          <a href="/docs" style={{ 
             color: '#8b5cf6', 
             fontSize: '13px',
             textDecoration: 'none',

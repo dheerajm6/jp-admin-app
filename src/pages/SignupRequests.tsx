@@ -6,8 +6,7 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   EyeOutlined,
-  WarningOutlined,
-  SafetyOutlined
+  WarningOutlined
 } from '@ant-design/icons'
 
 const { Search } = Input
@@ -81,7 +80,7 @@ const SignupRequests: React.FC = () => {
           rejected: { color: 'red', icon: <CloseCircleOutlined /> },
           under_review: { color: 'blue', icon: <EyeOutlined /> }
         }
-        const { color, icon } = config[status as keyof typeof config] || config.pending
+        const { color } = config[status as keyof typeof config] || config.pending
         return <Badge color={color} text={status.replace('_', ' ').toUpperCase()} />
       }
     },

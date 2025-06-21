@@ -35,7 +35,6 @@ import {
 
 const { Content } = Layout
 const { Title, Text } = Typography
-const { TabPane } = Tabs
 
 type AlertLevel = 'good' | 'warning' | 'critical'
 
@@ -86,14 +85,6 @@ const Dashboard: React.FC = () => {
     }
   }
 
-  const getAlertIcon = (level: AlertLevel) => {
-    switch (level) {
-      case 'critical': return <ExclamationCircleOutlined style={{ color: '#ff4d4f' }} />
-      case 'warning': return <WarningOutlined style={{ color: '#faad14' }} />
-      case 'good': return <CheckCircleOutlined style={{ color: '#52c41a' }} />
-      default: return null
-    }
-  }
 
   const getTrendIcon = (trend: 'up' | 'down' | 'stable') => {
     switch (trend) {

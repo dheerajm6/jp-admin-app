@@ -8,7 +8,7 @@ const TestConnection: React.FC = () => {
   const testConnection = async () => {
     try {
       // Test basic connection
-      const { data, error } = await supabase.auth.getSession()
+      const { error } = await supabase.auth.getSession()
       
       if (error) {
         setStatus(`Connection Error: ${error.message}`)

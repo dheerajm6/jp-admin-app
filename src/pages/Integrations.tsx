@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   Row,
@@ -12,23 +12,17 @@ import {
   Table,
   Tag,
   Alert,
-  Divider,
   Tooltip,
   Modal,
   Form,
   Input,
   Select,
   DatePicker,
-  InputNumber,
-  Switch
+  InputNumber
 } from 'antd';
 import {
-  CloudOutlined,
-  ApiOutlined,
   SettingOutlined,
   CheckCircleOutlined,
-  ExclamationCircleOutlined,
-  WarningOutlined,
   PlusOutlined,
   EditOutlined,
   ReloadOutlined,

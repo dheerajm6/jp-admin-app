@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Upload, Button, Typography, Tag, Space } from 'antd'
 import { UploadOutlined, DownloadOutlined } from '@ant-design/icons'
 
-const { Title, Text, Paragraph } = Typography
+const { Title, Paragraph } = Typography
 
 const RepresentativesUpload: React.FC = () => {
   const requiredColumns = [
