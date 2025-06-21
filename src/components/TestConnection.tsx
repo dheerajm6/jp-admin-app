@@ -38,7 +38,7 @@ const TestConnection: React.FC = () => {
   const createTestUser = async () => {
     try {
       // Try to create user with auto-confirm
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: 'admin@janpulse.com',
         password: 'JanPulse2025!',
         options: {
