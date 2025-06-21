@@ -8,7 +8,7 @@ const TestConnection: React.FC = () => {
   const testConnection = async () => {
     try {
       // Test basic connection
-      const { data, error } = await supabase.auth.getSession()
+      const { error } = await supabase.auth.getSession()
       
       if (error) {
         setStatus(`Connection Error: ${error.message}`)
@@ -38,7 +38,7 @@ const TestConnection: React.FC = () => {
   const createTestUser = async () => {
     try {
       // Try to create user with auto-confirm
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email: 'admin@janpulse.com',
         password: 'JanPulse2025!',
         options: {

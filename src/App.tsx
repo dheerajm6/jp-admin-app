@@ -6,7 +6,6 @@ import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import Dashboard from './components/Dashboard';
-import Representatives from './pages/Representatives';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import './App.css';
